@@ -13,5 +13,7 @@ idelinfinity辅助改版
    下载完添加到环境变量
 
 ## 执行
+
 修改start.py里面的帐号密码
+
 python start.py
