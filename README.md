@@ -12,3 +12,6 @@ idelinfinity辅助改版
    https://sites.google.com/a/chromium.org/chromedriver/downloads   
    下载完添加到环境变量
 
+## 执行
+修改start.py里面的帐号密码
+python start.py
