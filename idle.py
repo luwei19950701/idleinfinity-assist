@@ -156,7 +156,9 @@ class Idle():
             print("迷雾区域判断，稍后自动开始模拟点击...")
             for i in public:
                 currentId = int(i.get_attribute("id"))
+                #print(currentId)
                 currentClass = i.get_attribute("class")
+                #print(currentClass)
 
                 if (currentId in self.checkedPublic) or ("monster" in currentClass):
                     continue
@@ -176,10 +178,10 @@ class Idle():
 
             # 判断是否有怪
             monster = div.find_elements_by_class_name("monster")
-
             # 优先清除地图Boss
             if type != 1:
                 for i in monster:
+                    print(i)
                     if "boss" in i.get_attribute("class"):
                         self.remaining = 0
                         self.startPlay(i)
@@ -197,8 +199,7 @@ class Idle():
     def startPlay(self, monster):
         monsterId = monster.get_attribute("id")
         self.checkedPublic.append(monsterId)
-        self.click(monster, False)
-
+        self.click(monster, False,True)
         if self.isElementExists("#time"):
             count = int(self.driver.find_element_by_id("time").text)
             print("等待上次战斗结束 %s 秒" % (count))
@@ -231,9 +232,18 @@ class Idle():
 
     # 判断是否是不需要被点击的div,True表示不能被点击,
     def isCanDiv(self, divId, currentClass):
+        left = self.isLeftCanDiv(divId, currentClass)
+        top = self.isTopCanDiv(divId, currentClass)
+        right = self.isRightCanDiv(divId, currentClass)
+        bottom = self.isBottomCanDiv(divId, currentClass)
+        #print('########%d'%divId)
+        #print(left)
+        #print(top)
+        #print(right)
+        #print(bottom)
+        #print('########end')
 
-        return self.isLeftCanDiv(divId, currentClass) and self.isTopCanDiv(divId, currentClass) and self.isRightCanDiv(
-            divId, currentClass) and self.isBottomCanDiv(divId, currentClass)
+        return left and top and right and bottom
 
     # 判断左侧是否是可见区域,或者点击不能点亮
     def isLeftCanDiv(self, divId, currentClass):
@@ -274,17 +284,26 @@ class Idle():
 
     # type == True 传入的是一个字符串
     # type == False 传入的是一个对象
-    def click(self, element, type=True):
-        if isinstance(element, str):
-            element = self.driver.find_element_by_xpath(element)
-            js = "arguments[0].click()"
-        else:
+    def click(self, element, type=True,monster=False):
+        if monster:
             js = "const width = $(arguments[0]).width() - 1;" \
-                 "const height = $(arguments[0]).height() - 1;" \
-                 "const rect = $(arguments[0]).offset();" \
-                 "const x = Math.round(rect.left + 1 + (width * Math.random())) + $(window).scrollLeft(); " \
-                 "const y = Math.round(rect.top + 1 + (height * Math.random())) + $(window).scrollTop(); " \
-                 "$(arguments[0]).trigger({ type: 'click', pageX: x, pageY: y });"
+             "const height = $(arguments[0]).height() - 1;" \
+             "const rect = $(arguments[0]).offset();" \
+             "const x = Math.round(rect.left + 1 + (width * Math.random())) + $(window).scrollLeft(); " \
+             "const y = Math.round(rect.top + 1 + (height * Math.random())) + $(window).scrollTop(); " \
+             "console.log(x); console.log(y); " \
+             "$(arguments[0]).trigger({ type: 'mousedown', pageX: x, pageY: y });"
+        else:
+            if isinstance(element, str):
+                element = self.driver.find_element_by_xpath(element)
+                js = "arguments[0].click()"
+            else:
+                js = "const width = $(arguments[0]).width() - 1;" \
+                     "const height = $(arguments[0]).height() - 1;" \
+                     "const rect = $(arguments[0]).offset();" \
+                     "const x = Math.round(rect.left + 1 + (width * Math.random())) + $(window).scrollLeft(); " \
+                     "const y = Math.round(rect.top + 1 + (height * Math.random())) + $(window).scrollTop(); " \
+                     "$(arguments[0]).trigger({ type: 'click', pageX: x, pageY: y });"
 
         self.driver.execute_script(js, element)
         # ActionChains(self.driver).click(element).perform()
