@@ -174,7 +174,7 @@ class Idle():
                     #
                     # action.move_by_offset(location['x'],location['y']).click(i).perform()
                     # time.sleep(1)
-                    self.click(i, False)
+                    self.click(i, False,True)
 
             # 判断是否有怪
             monster = div.find_elements_by_class_name("monster")
@@ -291,7 +291,6 @@ class Idle():
              "const rect = $(arguments[0]).offset();" \
              "const x = Math.round(rect.left + 1 + (width * Math.random())) + $(window).scrollLeft(); " \
              "const y = Math.round(rect.top + 1 + (height * Math.random())) + $(window).scrollTop(); " \
-             "console.log(x); console.log(y); " \
              "$(arguments[0]).trigger({ type: 'mousedown', pageX: x, pageY: y });"
         else:
             if isinstance(element, str):
