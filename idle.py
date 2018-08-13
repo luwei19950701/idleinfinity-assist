@@ -25,10 +25,12 @@ class Idle():
         self.boss = False  # 是否刷完Boss重置
         self.type = 1  # 刷副本类型 1:全部刷完  2:刷掉至少一半和Boss  3:刷掉Boss
 
-        self.homeUrl = "https://www.idleinfinity.cn"
+        #self.homeUrl = "https://www.idleinfinity.cn"
+        self.homeUrl = "http://118.25.41.160:8888"
         self.detailUrl = self.homeUrl + "/Character/Detail?id="
         self.mysteryUrl = self.homeUrl + "/Map/Detail?id="
-        self.codeUrl = "https://www.idleinfinity.cn/Home/Code"
+        #self.codeUrl = "https://www.idleinfinity.cn/Home/Code"
+        self.codeUrl = "http://118.25.41.160:8888/Home/Code"
 
         print("启动浏览器中...")
         self.driver = webdriver.Chrome()
@@ -73,7 +75,7 @@ class Idle():
             temp = {}
             temp['name'] = i.find_element_by_class_name("panel-heading").text.split(' ')[0]
             temp['job'] = i.find_element_by_class_name("media-body").text.split("\n")[0]
-            temp['id'] = i.find_element_by_class_name("btn-default").get_attribute("href")[48:]
+            temp['id'] = i.find_element_by_class_name("btn-default").get_attribute("href").split('=')[1]
             print("角色 %d：\n    id：%s\n    昵称：%s\n    职业：%s" % (j, temp['id'], temp['name'], temp['job']))
             self.charList.append(temp)
             j += 1
@@ -181,7 +183,6 @@ class Idle():
             # 优先清除地图Boss
             if type != 1:
                 for i in monster:
-                    print(i)
                     if "boss" in i.get_attribute("class"):
                         self.remaining = 0
                         self.startPlay(i)
