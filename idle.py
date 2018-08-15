@@ -25,12 +25,12 @@ class Idle():
         self.boss = False  # 是否刷完Boss重置
         self.type = 1  # 刷副本类型 1:全部刷完  2:刷掉至少一半和Boss  3:刷掉Boss
 
-        #self.homeUrl = "https://www.idleinfinity.cn"
-        self.homeUrl = "http://118.25.41.160:8888"
+        # self.homeUrl = "http://118.25.41.160:8888"
+        self.homeUrl = "https://www.idleinfinity.cn"
         self.detailUrl = self.homeUrl + "/Character/Detail?id="
         self.mysteryUrl = self.homeUrl + "/Map/Detail?id="
-        #self.codeUrl = "https://www.idleinfinity.cn/Home/Code"
-        self.codeUrl = "http://118.25.41.160:8888/Home/Code"
+        # self.codeUrl = "http://118.25.41.160:8888/Home/Code"
+        self.codeUrl = "https://www.idleinfinity.cn/Home/Code"
 
         print("启动浏览器中...")
         self.driver = webdriver.Chrome()
